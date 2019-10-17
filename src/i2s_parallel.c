@@ -135,7 +135,7 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   dev->fifo_conf.dscr_en = 1;
 
   dev->conf1.val = 0;
-  dev->conf1.tx_stop_en = 1;
+  dev->conf1.tx_stop_en = 0;
   dev->conf1.tx_pcm_bypass = 1;
   
   dev->conf_chan.val = 0;
