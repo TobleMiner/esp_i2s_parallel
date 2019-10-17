@@ -18,7 +18,8 @@ typedef enum {
 } i2s_parallel_sample_width_t;
 
 typedef struct {
-  int                         gpios[24]; // The parallel GPIOs to use, set gpio to -1 to disable
+  int                         gpio_clk;
+  int                         gpios_bus[24]; // The parallel GPIOs to use, set gpio to -1 to disable
   i2s_parallel_sample_width_t sample_width;
   int                         sample_rate;
 } i2s_parallel_config_t;

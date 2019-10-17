@@ -67,23 +67,38 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
     return ESP_ERR_INVALID_ARG;
   }
 
-  int iomux_signal_base;
+  volatile int iomux_signal_base;
+  volatile int iomux_clock;
   // Initialize I2S peripheral
-  if (port == I2S_NUM_1) {
-      periph_module_reset(PERIPH_I2S1_MODULE);
-      periph_module_enable(PERIPH_I2S1_MODULE);
-      iomux_signal_base = I2S0O_DATA_OUT0_IDX;
-  } else {
+  if (port == I2S_NUM_0) {
       periph_module_reset(PERIPH_I2S0_MODULE);
       periph_module_enable(PERIPH_I2S0_MODULE);
+      iomux_clock = I2S0O_WS_OUT_IDX;
+
+      iomux_signal_base = I2S0O_DATA_OUT0_IDX;
+      printf("sample_width: %d\n", conf->sample_width);
+      printf("test_width: %d\n", I2S_PARALLEL_WIDTH_8);
+      if(conf->sample_width == I2S_PARALLEL_WIDTH_8) {
+        // FIXME: First bit is still missing, hardware bug?
+        iomux_signal_base += 8;
+      }
+  } else {
+      periph_module_reset(PERIPH_I2S1_MODULE);
+      periph_module_enable(PERIPH_I2S1_MODULE);
+      iomux_clock = I2S1O_WS_OUT_IDX;
+
       iomux_signal_base = I2S1O_DATA_OUT0_IDX;
+      if(conf->sample_width == I2S_PARALLEL_WIDTH_16) {
+        iomux_signal_base = I2S1O_DATA_OUT8_IDX;
+      }
   }
 
   // Setup GPIOs
   int bus_width = get_bus_width(conf->sample_width);
   for(int i = 0; i < bus_width; i++) {
-    iomux_set_signal(conf->gpios[i], iomux_signal_base + i);
+    iomux_set_signal(conf->gpios_bus[i], iomux_signal_base + i);
   }
+  iomux_set_signal(conf->gpio_clk, iomux_clock);
 
   // Setup I2S peripheral
   i2s_dev_t* dev = I2S[port];
