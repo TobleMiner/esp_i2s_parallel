@@ -8,7 +8,7 @@
 #include <esp_err.h>
 #include <rom/lldesc.h>
 
-#define I2S_PARALLEL_CLOCK_HZ 40000000
+#define I2S_PARALLEL_CLOCK_HZ 80000000L
 
 typedef enum {
   I2S_PARALLEL_WIDTH_8,
