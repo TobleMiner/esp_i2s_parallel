@@ -114,15 +114,15 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   dev->sample_rate_conf.val = 0;
   dev->sample_rate_conf.rx_bits_mod = bus_width;
   dev->sample_rate_conf.tx_bits_mod = bus_width;
-  dev->sample_rate_conf.rx_bck_div_num = I2S_PARALLEL_CLOCK_HZ / conf->sample_rate;
-  dev->sample_rate_conf.tx_bck_div_num = I2S_PARALLEL_CLOCK_HZ / conf->sample_rate;
+  dev->sample_rate_conf.rx_bck_div_num = 1;
+  dev->sample_rate_conf.tx_bck_div_num = 1;
 
   // No support for fractional dividers (could probably be ported from official serial i2s driver though)
   dev->clkm_conf.val = 0;
   dev->clkm_conf.clka_en = 0;
   dev->clkm_conf.clkm_div_a = 0;
   dev->clkm_conf.clkm_div_b = 0;
-  dev->clkm_conf.clkm_div_num = 1;
+  dev->clkm_conf.clkm_div_num = I2S_PARALLEL_CLOCK_HZ / conf->sample_rate;
 
   // Some fifo conf I don't quite understand 
   dev->fifo_conf.val = 0;
