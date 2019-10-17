@@ -84,6 +84,10 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
         // FIXME: First bit is still missing, hardware bug?
         iomux_signal_base += 8;
       }
+      if(conf->sample_width == I2S_PARALLEL_WIDTH_16) {
+        // FIXME: First bit is still missing, hardware bug?
+        iomux_signal_base += 8;
+      }
   } else {
       periph_module_reset(PERIPH_I2S1_MODULE);
       periph_module_enable(PERIPH_I2S1_MODULE);
