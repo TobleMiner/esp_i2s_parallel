@@ -45,7 +45,7 @@ static void fifo_reset(i2s_dev_t* dev) {
 //  while(dev->state.rx_fifo_reset_back);
   dev->conf.rx_fifo_reset = 0;
   dev->conf.tx_fifo_reset = 1;
-  while(dev->state.tx_fifo_reset_back);
+//  while(dev->state.tx_fifo_reset_back);
   dev->conf.tx_fifo_reset = 0;
 }
 
