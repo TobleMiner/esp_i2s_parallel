@@ -81,11 +81,9 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
       printf("sample_width: %d\n", conf->sample_width);
       printf("test_width: %d\n", I2S_PARALLEL_WIDTH_8);
       if(conf->sample_width == I2S_PARALLEL_WIDTH_8) {
-        // FIXME: First bit is still missing, hardware bug?
         iomux_signal_base += 8;
       }
       if(conf->sample_width == I2S_PARALLEL_WIDTH_16) {
-        // FIXME: First bit is still missing, hardware bug?
         iomux_signal_base += 8;
       }
   } else {
