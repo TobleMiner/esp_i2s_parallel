@@ -126,12 +126,16 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
 
   // Some fifo conf I don't quite understand 
   dev->fifo_conf.val = 0;
+  // Dictated by datasheet
   dev->fifo_conf.rx_fifo_mod_force_en = 1;
   dev->fifo_conf.tx_fifo_mod_force_en = 1;
+  // Not really described for non-pcm modes, although datasheet states it should be set correctly even for LCD mode
   dev->fifo_conf.tx_fifo_mod = 1;
   dev->fifo_conf.tx_fifo_mod = 1;
+  // Pobably relevant for buffering from the DMA controller
   dev->fifo_conf.rx_data_num = 32; //Thresholds. 
   dev->fifo_conf.tx_data_num = 32;
+  // Enable DMA support
   dev->fifo_conf.dscr_en = 1;
 
   dev->conf1.val = 0;
