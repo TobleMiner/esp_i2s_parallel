@@ -78,8 +78,6 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
       iomux_clock = I2S0O_WS_OUT_IDX;
 
       iomux_signal_base = I2S0O_DATA_OUT0_IDX;
-      printf("sample_width: %d\n", conf->sample_width);
-      printf("test_width: %d\n", I2S_PARALLEL_WIDTH_8);
       if(conf->sample_width == I2S_PARALLEL_WIDTH_8) {
         iomux_signal_base += 8;
       }
