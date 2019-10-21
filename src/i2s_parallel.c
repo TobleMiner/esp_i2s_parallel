@@ -20,7 +20,7 @@ static inline int get_bus_width(i2s_parallel_sample_width_t width) {
     case I2S_PARALLEL_WIDTH_24:
       return 24;
     default:
-      return -1;
+      return -ESP_ERR_INVALID_ARG;
   }
 }
 

@@ -40,6 +40,6 @@ static inline int i2s_parallel_get_memory_width(i2s_port_t port, i2s_parallel_sa
     case I2S_PARALLEL_WIDTH_24:
       return 4;
     default:
-      return -1;
+      return -ESP_ERR_INVALID_ARG;
   }
 }
