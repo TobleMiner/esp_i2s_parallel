@@ -26,6 +26,6 @@ This difference somewhat results from the differences in true 8 bit mode.
 
 The maximum speed achievable depends on the width of the data read from memory.
 
-For I2S1 it is peripheral_clk / 2 in 8 bit mode while it is peripheral_clk / 4 for I2S0 even in 8 bit mode.
+For I2S1 it is `peripheral_clk / 2` in 8 bit mode while it is `peripheral_clk / 4` for I2S0 even in 8 bit mode.
 
-In 16 bit mode it is peripheral_clk / 4 for both I2S0 and I2S1.
+In 16 bit mode it is `peripheral_clk / 4` for both I2S0 and I2S1.
