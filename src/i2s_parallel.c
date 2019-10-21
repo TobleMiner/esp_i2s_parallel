@@ -112,6 +112,7 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
 
   // Setup i2s clock
   dev->sample_rate_conf.val = 0;
+  // Third stage config, width of data to be written to IO (I think this should always be the actual data width?)
   dev->sample_rate_conf.rx_bits_mod = bus_width;
   dev->sample_rate_conf.tx_bits_mod = bus_width;
   dev->sample_rate_conf.rx_bck_div_num = 1;
@@ -130,9 +131,13 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   dev->fifo_conf.rx_fifo_mod_force_en = 1;
   dev->fifo_conf.tx_fifo_mod_force_en = 1;
   // Not really described for non-pcm modes, although datasheet states it should be set correctly even for LCD mode
+  // First stage config. Configures how data is loaded into fifo
   if(conf->sample_width == I2S_PARALLEL_WIDTH_24) {
+    // Mode 0, single 32-bit channel, linear 32 bit load to fifo
     dev->fifo_conf.tx_fifo_mod = 3;
   } else {
+    // Mode 1, single 16-bit channel, load 16 bit sample(*) into fifo and pad to 32 bit with zeros
+    // *Actually a 32 bit read where two samples are read at once. Length of fifo must thus still be word-alligned
     dev->fifo_conf.tx_fifo_mod = 1;
   }
   // Pobably relevant for buffering from the DMA controller
@@ -145,7 +150,9 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   dev->conf1.tx_stop_en = 0;
   dev->conf1.tx_pcm_bypass = 1;
   
+  // Second stage config
   dev->conf_chan.val = 0;
+  // Tx in mono mode, read 32 bit per sample from fifo
   dev->conf_chan.tx_chan_mod = 1;
   dev->conf_chan.rx_chan_mod = 1;
   
