@@ -68,6 +68,10 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   if(conf->sample_rate > I2S_PARALLEL_CLOCK_HZ || conf->sample_rate < 1) {
     return ESP_ERR_INVALID_ARG;
   }
+  uint32_t clk_div_main = I2S_PARALLEL_CLOCK_HZ / conf->sample_rate / i2s_parallel_get_memory_width(port, conf->sample_width);
+  if(clk_div_main < 2 || clk_div_main > 0xFF) {
+    return ESP_ERR_INVALID_ARG;
+  }
 
   volatile int iomux_signal_base;
   volatile int iomux_clock;
@@ -134,7 +138,7 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   dev->clkm_conf.clka_en = 0;
   dev->clkm_conf.clkm_div_a = 0;
   dev->clkm_conf.clkm_div_b = 0;
-  dev->clkm_conf.clkm_div_num = I2S_PARALLEL_CLOCK_HZ / conf->sample_rate;
+  dev->clkm_conf.clkm_div_num = clk_div_main;
 
   // Some fifo conf I don't quite understand 
   dev->fifo_conf.val = 0;
