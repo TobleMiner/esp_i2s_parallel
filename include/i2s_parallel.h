@@ -28,9 +28,13 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
 
 esp_err_t i2c_parallel_send_dma(i2s_port_t port, lldesc_t* dma_descriptor);
 
-static inline int i2s_parallel_get_memory_width(i2s_parallel_sample_width_t width) {
+static inline int i2s_parallel_get_memory_width(i2s_port_t port, i2s_parallel_sample_width_t width) {
   switch(width) {
     case I2S_PARALLEL_WIDTH_8:
+      // IS21 supports space saving single byte 8 bit parallel access
+      if(port == I2S_NUM_1) {
+        return 1;
+      }
     case I2S_PARALLEL_WIDTH_16:
       return 2;
     case I2S_PARALLEL_WIDTH_24:
