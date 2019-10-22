@@ -184,7 +184,7 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   return ESP_OK;
 }
 
-esp_err_t i2c_parallel_send_dma(i2s_port_t port, lldesc_t* dma_descriptor) {
+esp_err_t i2s_parallel_send_dma(i2s_port_t port, lldesc_t* dma_descriptor) {
   if(port < I2S_NUM_0 || port >= I2S_NUM_MAX) {
     return ESP_ERR_INVALID_ARG;
   }
