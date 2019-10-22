@@ -75,11 +75,13 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
 
   volatile int iomux_signal_base;
   volatile int iomux_clock;
+  int irq_source;
   // Initialize I2S peripheral
   if (port == I2S_NUM_0) {
       periph_module_reset(PERIPH_I2S0_MODULE);
       periph_module_enable(PERIPH_I2S0_MODULE);
       iomux_clock = I2S0O_WS_OUT_IDX;
+      irq_source = ETS_I2S0_INTR_SOURCE;
 
       switch(conf->sample_width) {
         case I2S_PARALLEL_WIDTH_8:
@@ -96,6 +98,7 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
       periph_module_reset(PERIPH_I2S1_MODULE);
       periph_module_enable(PERIPH_I2S1_MODULE);
       iomux_clock = I2S1O_WS_OUT_IDX;
+      irq_source = ETS_I2S1_INTR_SOURCE;
 
       switch(conf->sample_width) {
         case I2S_PARALLEL_WIDTH_16:
@@ -178,7 +181,11 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   dev->timing.val = 0;
 
   if(irq_hndlr) {
-    esp_intr_alloc(ETS_I2S0_INTR_SOURCE + port, 0, irq_hndlr, priv, NULL);
+    esp_err_t err =  esp_intr_alloc(irq_source, ESP_INTR_FLAG_IRAM, irq_hndlr, priv, NULL);
+    if(err) {
+      return err;
+    }
+    dev->int_ena.out_eof = 1;
   }
 
   return ESP_OK;
