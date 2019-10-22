@@ -213,3 +213,10 @@ esp_err_t i2s_parallel_send_dma(i2s_port_t port, lldesc_t* dma_descriptor) {
 
   return ESP_OK;
 }
+
+i2s_dev_t* i2s_parallel_get_dev(i2s_port_t port) {
+  if(port < I2S_NUM_0 || port >= I2S_NUM_MAX) {
+    return NULL;
+  }
+  return I2S[port];
+}

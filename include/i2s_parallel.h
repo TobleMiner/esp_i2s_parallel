@@ -28,6 +28,8 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
 
 esp_err_t i2s_parallel_send_dma(i2s_port_t port, lldesc_t* dma_descriptor);
 
+i2s_dev_t* i2s_parallel_get_dev(i2s_port_t port);
+
 static inline int i2s_parallel_get_memory_width(i2s_port_t port, i2s_parallel_sample_width_t width) {
   switch(width) {
     case I2S_PARALLEL_WIDTH_8:
