@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +59,7 @@ static void dev_reset(i2s_dev_t* dev) {
   dev->conf.tx_reset=0;
 }
 
-esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* conf, intr_handler_t irq_hndlr, void* priv) {
+esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* conf, bool invert_clk, intr_handler_t irq_hndlr, void* priv) {
   if(port < I2S_NUM_0 || port >= I2S_NUM_MAX) {
     return ESP_ERR_INVALID_ARG;
   }
@@ -174,9 +175,8 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   dev->conf_chan.tx_chan_mod = 1;
   dev->conf_chan.rx_chan_mod = 1;
   
-  //Invert ws to be active-low... ToDo: make this configurable
-  dev->conf.tx_right_first = 1;
-  dev->conf.rx_right_first = 1;
+  dev->conf.tx_right_first = !!invert_clk;
+  dev->conf.rx_right_first = !!invert_clk;
   
   dev->timing.val = 0;
 
