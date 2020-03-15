@@ -140,8 +140,8 @@ esp_err_t i2s_parallel_driver_install(i2s_port_t port, i2s_parallel_config_t* co
   // No support for fractional dividers (could probably be ported from official serial i2s driver though)
   dev->clkm_conf.val = 0;
   dev->clkm_conf.clka_en = 0;
-  dev->clkm_conf.clkm_div_a = 0;
-  dev->clkm_conf.clkm_div_b = 0;
+  dev->clkm_conf.clkm_div_a = 63;
+  dev->clkm_conf.clkm_div_b = 40;
   dev->clkm_conf.clkm_div_num = clk_div_main;
 
   // Some fifo conf I don't quite understand 
